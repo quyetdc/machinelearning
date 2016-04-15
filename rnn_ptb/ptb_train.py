@@ -1,6 +1,6 @@
 import os
 import time
-import reader
+import ptb_reader
 import numpy as np
 import tensorflow as tf
 from ptb_model import PTBModel
@@ -12,14 +12,14 @@ class SmallConfig(object):
     learning_rate = 1.0
     max_grad_norm = 5
     num_layers = 2
-    num_steps = 20
-    hidden_size = 200
-    max_epoch = 4
-    max_max_epoch = 13
+    num_steps = 10  # 20
+    hidden_size = 100  # 200
+    max_epoch = 2  # 4
+    max_max_epoch = 5  # 13
     keep_prob = 1.0
     lr_decay = 0.5
     batch_size = 20
-    vocab_size = 10000
+    vocab_size = 10000  # 10000
 
 
 class MediumConfig(object):
@@ -68,7 +68,7 @@ def run_epoch(session, m, data, eval_op, verbose=False, vocabulary=None):
     costs = 0.0
     iters = 0
     state = m.initial_state.eval()
-    for step, (x, y) in enumerate(reader.ptb_iterator(data, m.batch_size,
+    for step, (x, y) in enumerate(ptb_reader.ptb_iterator(data, m.batch_size,
                                                       m.num_steps)):
         cost, state, probs, logits, _ = session.run([m.cost, m.final_state, m.probabilities, m.logits, eval_op],
                                                     {m.input_data: x,
@@ -109,16 +109,21 @@ def get_config(model_option):
 
 def main():
     # --data_path=/tmp/simple-examples/data/ --model small
-    data_path = '/home/hact/Downloads/simple-examples/data/'
+    data_path = '/home/hact/workspace/python/machinelearning/rnn_ptb/data/'
+    # link to download zip file simple-examples: http://www.fit.vutbr.cz/~imikolov/rnnlm/simple-examples.tgz
     model_option = 'small'
     if not data_path:
         raise ValueError("Must set --data_path to PTB data directory")
 
     out_dir = 'models'
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
     checkpoint_dir = os.path.join(out_dir, "checkpoints")
     checkpoint_prefix = os.path.join(checkpoint_dir, "model")
+    if not os.path.exists(checkpoint_dir):
+        os.makedirs(checkpoint_dir)
 
-    raw_data = reader.ptb_raw_data(data_path)
+    raw_data = ptb_reader.ptb_raw_data(data_path)
     train_data, valid_data, test_data, vocabulary = raw_data
 
     config = get_config(model_option)
@@ -150,6 +155,7 @@ def main():
             print("Epoch: %d Valid Perplexity: %.3f" % (i + 1, valid_perplexity))
 
             path = saver.save(session, checkpoint_prefix, global_step=i)
+            print('save to: ' + str(path))
 
         # test_perplexity = run_epoch(session, mtest, test_data, tf.no_op(), vocabulary=vocabulary)
         # print("Test Perplexity: %.3f" % test_perplexity)
