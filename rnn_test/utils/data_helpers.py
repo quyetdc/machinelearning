@@ -36,18 +36,18 @@ from tensorflow.python.platform import gfile
 
 def _read_words(filename):
     with gfile.GFile(filename, "r") as f:
-        return f.read().replace("\n", "<eos>").split()
+        return f.read().replace("\n", " <eos> ").split()
 
 
 def _build_vocab(filename):
     data = _read_words(filename)
-
     counter = collections.Counter(data)
+    # counter.update({'unk': -1})
     count_pairs = sorted(counter.items(), key=lambda x: -x[1])
+    count_pairs = [('unk', -1)] + count_pairs
 
     words, _ = list(zip(*count_pairs))
     word_to_id = dict(zip(words, range(len(words))))
-
     return word_to_id
 
 
@@ -136,7 +136,7 @@ def iterator(raw_data_, batch_size, num_steps):
         data[i] = raw_data_[batch_len * i:batch_len * (i + 1)]
 
     epoch_size = (batch_len - 1) // num_steps
-
+    print(batch_len)
     if epoch_size == 0:
         raise ValueError("epoch_size == 0, decrease batch_size or num_steps")
 
@@ -144,3 +144,5 @@ def iterator(raw_data_, batch_size, num_steps):
         x = data[:, i*num_steps:(i+1)*num_steps]
         y = data[:, i*num_steps+1:(i+1)*num_steps+1]
         yield (x, y)
+
+

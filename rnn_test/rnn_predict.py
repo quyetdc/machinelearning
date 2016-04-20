@@ -17,6 +17,7 @@ def run_epoch(session, m, data, eval_op, verbose=False, vocabulary=None):
     :param verbose
     :param vocabulary
     Runs the model on the given data."""
+    print(data)
     size_limit = 30
     find_stop_word = False
     state = m.initial_state.eval()
@@ -39,9 +40,11 @@ def run_epoch(session, m, data, eval_op, verbose=False, vocabulary=None):
                 if word_id_ == next_word_id:
                     print(word_)
                     next_word = word_
-        next_word_arr = next_word.split('<eos>')
-        if len(next_word_arr) > 1:
-            next_word = next_word_arr[0]
+        # next_word_arr = next_word.split('<eos>')
+        # if len(next_word_arr) > 1:
+        #     next_word = next_word_arr[0]
+        #     find_stop_word = True
+        if next_word == '<eos>':
             find_stop_word = True
         gen_words.append(next_word)
         input_data = np.array(input_data)[:, 1:]
@@ -84,7 +87,12 @@ def main():
     # sentence = 'Ốp lưng Spigen iPhone 6/ 6S Plus Case Neo Hybrid Gunmetal SGP11664'
     # sentence = 'Ốp lưng Spigen iPhone 6/ 6S Plus Case Neo Hybrid'
     # sentence = 'Ốp lưng Spigen iPhone 6/ 6S'
-    sentence = 'Ốp lưng Spigen Galaxy S6'
+    # sentence = 'Ốp lưng Spigen Galaxy S6'
+    # sentence = 'Saller: Chào em! Chị có thể giúp gì cho em? <eos>'
+    # sentence = 'Mary: Chị ơi! Em có thể mặc thử được không ạ?<eos>Saller:'
+    # sentence = 'Bạn khỏe không? <eos>'
+    # sentence = 'Bạn khỏe'
+    sentence = 'Anh khỏe không? <eos>'
     predict_data = data_helpers.predict_data(sentence, vocabulary, config.num_steps)
 
     with tf.Graph().as_default(), tf.Session() as session:
@@ -122,6 +130,7 @@ def main():
         gen_words = run_epoch(session, mpredict, predict_data, tf.no_op(), vocabulary=vocabulary)
         print('=' * 50)
         print('=' * 50)
+        print(sentence)
         print(' '.join(gen_words))
 
 

@@ -4,14 +4,14 @@ class SmallConfig(object):
     learning_rate = 1.0
     max_grad_norm = 5
     num_layers = 2
-    num_steps = 10  # 20
-    hidden_size = 100  # 200
-    max_epoch = 20  # 4
-    max_max_epoch = 50  # 13
+    num_steps = 10
+    hidden_size = 100
+    max_epoch = 20
+    max_max_epoch = 50
     keep_prob = 1.0
     lr_decay = 0.5
-    batch_size = 5
-    vocab_size = 10000  # 10000
+    batch_size = 2  # 5
+    vocab_size = 10000
 
 
 class MediumConfig(object):
