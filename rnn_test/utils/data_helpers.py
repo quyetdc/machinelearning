@@ -53,7 +53,7 @@ def _build_vocab(filename):
 
 def _file_to_word_ids(filename, word_to_id):
     data = _read_words(filename)
-    convert_word_to_id = [word_to_id[word] if word in word_to_id else 0 for word in data]
+    convert_word_to_id = [word_to_id[word] if word in word_to_id else word_to_id['unk'] for word in data]
     return convert_word_to_id
 
 
@@ -91,7 +91,7 @@ def raw_data(data_path=None):
 
 def predict_data(sentence, word_to_id, num_steps):
     data = sentence.split()
-    convert_word_to_id = [word_to_id[word] if word in word_to_id else 0 for word in data]
+    convert_word_to_id = [word_to_id[word] if word in word_to_id else word_to_id['unk'] for word in data]
     pad_data = np.zeros([num_steps], dtype=np.int32)
     crop_data = convert_word_to_id[-num_steps:]
     len_crop = len(crop_data)
