@@ -99,8 +99,8 @@ def predict_data(sentence, word_to_id, num_steps):
         step_data = [np.concatenate((pad_data[:num_steps - len_crop], crop_data), axis=0)]
     else:
         step_data = [crop_data]
-    # return convert_word_to_id
-    return step_data
+    return [convert_word_to_id]
+    # return step_data
 
 
 def iterator(raw_data_, batch_size, num_steps):

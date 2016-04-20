@@ -92,8 +92,11 @@ def main():
     # sentence = 'Mary: Chị ơi! Em có thể mặc thử được không ạ?<eos>Saller:'
     # sentence = 'Bạn khỏe không? <eos>'
     # sentence = 'Bạn khỏe'
-    sentence = 'Anh khỏe không? <eos>'
+    # sentence = 'Anh khỏe không? <eos>'
+    # sentence = 'Chị khỏe không? <eos>'
+    sentence = 'Chị ăn cơm chưa? <eos>'
     predict_data = data_helpers.predict_data(sentence, vocabulary, config.num_steps)
+    eval_config.num_steps = len(predict_data[0])
 
     with tf.Graph().as_default(), tf.Session() as session:
         initializer = tf.random_uniform_initializer(-config.init_scale,
