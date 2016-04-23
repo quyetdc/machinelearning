@@ -25,7 +25,23 @@ def plot_data():
     return True
 
 
-def scatter_data():
+def scatter_data(feature_size=3):
+    diabete_data = np.array(get_diabete_data())
+    xs = diabete_data[:, 0]
+    ys = diabete_data[:, 1]
+    if feature_size == 2:
+        plt.scatter(xs, ys, c='b', marker='o')
+    elif feature_size == 3:
+        zs = diabete_data[:, 2]
+        fig = plt.figure()
+
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter(xs, zs, ys, c='r', marker='o')
+
+        ax.set_xlabel('X Label')
+        ax.set_ylabel('Y Label')
+        ax.set_zlabel('Z Label')
+    plt.show()
     return True
 
 if __name__ == '__main__':
@@ -35,5 +51,6 @@ if __name__ == '__main__':
     print('Số lượng mẫu')
     print(len(diabete_data))
     print('Kích thước không gian feature')
-    print(len(diabete_data[0]))
+    print(len(diabete_data[0]))  # Chiều đầu tiên là label
     plot_data()
+    scatter_data()
