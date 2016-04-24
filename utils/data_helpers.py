@@ -16,6 +16,19 @@ def auto_gen_2d_regression_data(n=100, a=1.0, b=0.0, delta_b=0.05, x_range=[0.0,
     return data
 
 
+def auto_gen_3d_regression_data(n=100, a=1.0, b=1.0, c=0.0, delta_c=0.05, x_range=[0.0, 1.0], y_range=[0.0, 1.0]):
+    n = int(n)
+    data = []
+    if n > 0:
+        for i in range(n):
+            x_ = float(i) * (x_range[1] - x_range[0]) / n
+            for j in range(n):
+                y_ = float(j) * (y_range[1] - y_range[0]) / n
+                z_ = a * x_ + b * y_ + random.uniform(-1.0 * delta_c, delta_c)
+                data.append([x_, y_, z_])
+    return data
+
+
 def auto_gen_2d_classification_data(n=100, min_num=0.0, max_num=1.0):
     data = []
     avg_num = (min_num + max_num) / 2.0
@@ -42,15 +55,20 @@ def auto_gen_and_save_classification_data(n=100, file_path=''):
         f.close()
 
 
-def auto_gen_and_save_regression_data(n=100, file_path=''):
+def auto_gen_and_save_regression_data(n=100, file_path='', feature_dim=2):
     if (n > 0) & (len(file_path) > 0):
-        data = auto_gen_2d_regression_data(n=n)
-        f = open(file_path, 'w')
-        for sample_ in data:
-            sample_str = map(str, sample_)
-            f.write('\t'.join(sample_str))
-            f.write('\n')
-        f.close()
+        data = None
+        if feature_dim == 2:
+            data = auto_gen_2d_regression_data(n=n)
+        if feature_dim == 3:
+            data = auto_gen_3d_regression_data(n=n)
+        if data is not None:
+            f = open(file_path, 'w')
+            for sample_ in data:
+                sample_str = map(str, sample_)
+                f.write('\t'.join(sample_str))
+                f.write('\n')
+            f.close()
 
 
 def read_data(file_path):
@@ -144,7 +162,10 @@ def main():
     # auto_gen_and_save_classification_data(n=1000, file_path='../data/customer_saving_salary')
     # plot_data(file_path='../data/customer_saving_salary')
     # auto_gen_and_save_regression_data(n=1000, file_path='../data/customer_salary_satisfaction')
-    plot_regression_data(file_path='../data/customer_salary_satisfaction')
+    # plot_regression_data(file_path='../data/customer_salary_satisfaction')
+    # auto_gen_and_save_regression_data(n=100, file_path='../data/customer_off_time_salary_satisfaction',
+    #                                   feature_dim=3)
+    plot_regression_data(file_path='../data/customer_off_time_salary_satisfaction')
 
 if __name__ == '__main__':
     main()
