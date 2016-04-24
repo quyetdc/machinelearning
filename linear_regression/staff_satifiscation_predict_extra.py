@@ -44,9 +44,22 @@ def test():
     print(variance_score)
     # Plot data
     # Plot outputs
-    plt.scatter(x_test_data, y_test_data,  color='black')
-    plt.plot(x_test_data, predict_y_data, color='blue',
-             linewidth=3)
+    x_1_data = np.array(x_test_data)[:, 0]
+    x_2_data = np.array(x_test_data)[:, 1]
+    fig = plt.figure()
+
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(x_1_data, x_2_data, y_test_data, c='r', marker='o')
+
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+
+    ax.scatter(x_1_data, x_2_data, predict_y_data, c='b', marker='D')
+    # ax.plot(x_1_data, x_2_data, predict_y_data, c='b', marker='D', linewidth=3)
+    # plt.scatter(x_test_data, y_test_data,  color='black')
+    # plt.plot(x_test_data, predict_y_data, color='blue',
+    #          linewidth=3)
     # plt.xticks(())
     # plt.yticks(())
 
