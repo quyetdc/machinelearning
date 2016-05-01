@@ -35,3 +35,4 @@ abs_y = math.sqrt(y1**2 + y2**2 + y3**2)
 print('||x|| = ' + str(abs_x))
 print('||y|| = ' + str(abs_y))
 print('cos(x, y) = ' + str(tichVoHuong / (abs_x * abs_y)))
+
