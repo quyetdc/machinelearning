@@ -100,6 +100,23 @@ def read_feature_data(file_path):
     return data
 
 
+def read_feature_label_data(file_path):
+    feature_data = []
+    target_data = []
+    if os.path.isfile(file_path):
+        f = open(file_path, 'r')
+        samples = list(f.readlines())
+        f.close()
+        samples = [sample.strip() for sample in samples if len(sample.strip()) > 0]
+        for sample in samples:
+            sample_arr = sample.split('\t')
+            feature_label_arr = map(float, sample_arr)
+            feature_arr = feature_label_arr[:-1]
+            feature_data.append(feature_arr)
+            target_data.append(feature_label_arr[-1])
+    return feature_data, target_data
+
+
 def plot_data(file_path, plot_label=False):
     data = read_data(file_path)
     if len(data) > 0:
