@@ -3,6 +3,7 @@ from utils import data_helpers
 import random
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt
 
 
 def load_train_data(split_percent=0.8):
@@ -45,10 +46,41 @@ def test():
     print(accuracy)
 
 
+def plot():
+    min_num=0.0
+    max_num=1.0
+    n = 100
+    m = 100
+    delta_n = (max_num - min_num) / n
+    delta_m = (max_num - min_num) / m
+    grid_data = []
+    for i in range(n):
+        for j in range(m):
+            grid_data.append([i * delta_n, j * delta_m])
+    saved_path = open('./model.pkl', 'rb')
+    saved_model = pickle.load(saved_path)
+    predicted_label = saved_model.predict(grid_data)
+    xs0 = []
+    ys0 = []
+    xs1 = []
+    ys1 = []
+    for point_id, point in enumerate(grid_data):
+        if predicted_label[point_id] == 0.0:
+            xs0.append(point[0])
+            ys0.append(point[1])
+        else:
+            xs1.append(point[0])
+            ys1.append(point[1])
+    plt.scatter(xs0, ys0, c='r')
+    plt.scatter(xs1, ys1, c='b')
+    plt.show()
+
+
 def main():
     print('starting...')
     # train()
-    test()
+    # test()
+    plot()
 
 
 if __name__ == '__main__':
