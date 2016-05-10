@@ -71,8 +71,8 @@ def plot_iris_data():
 
 def main():
     print('starting...')
-    plot_data(space_dim=3)
-    # plot_iris_data()
+    # plot_data(space_dim=3)
+    plot_iris_data()
 
 
 if __name__ == '__main__':
