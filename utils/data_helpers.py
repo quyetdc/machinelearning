@@ -57,12 +57,21 @@ def distance(vector_a, vector_b):
 def auto_gen_3d_clusters(centroids, n_samples=100, radius_ratio=0.95):
     data = []
     n_clusters = len(centroids)
+    min_dist = 1.0e10
     for i in range(n_clusters):
         other_ids = list(set(range(n_clusters)) - {i})
         distances = []
         for o_i in other_ids:
             distances.append(distance(centroids[i], centroids[o_i]))
-        min_dist = min(distances)
+        min_dist_ = min(distances)
+        if min_dist_ < min_dist:
+            min_dist = min_dist_
+    for i in range(n_clusters):
+        # other_ids = list(set(range(n_clusters)) - {i})
+        # distances = []
+        # for o_i in other_ids:
+        #     distances.append(distance(centroids[i], centroids[o_i]))
+        # min_dist = min(distances)
         count = 0
         while count < n_samples:
             replace_dist_x = random.uniform(-0.6, 0.6) * min_dist
@@ -77,9 +86,9 @@ def auto_gen_3d_clusters(centroids, n_samples=100, radius_ratio=0.95):
     return data
 
 
-def auto_gen_and_save_cluster_data(file_path, n=100):
+def auto_gen_and_save_cluster_data(file_path, n=100, radius_ratio=0.95):
     centroids = [[0.1, 0.1, 0.1], [0.2, 0.3, 0.2], [0.4, 0.5, 0.4], [0.7, 0.8, 0.7]]
-    data = auto_gen_3d_clusters(centroids=centroids, n_samples=n)
+    data = auto_gen_3d_clusters(centroids=centroids, n_samples=n, radius_ratio=radius_ratio)
     f = open(file_path, 'w')
     for sample_ in data:
         sample_str = map(str, sample_)
@@ -227,8 +236,8 @@ def main():
     # auto_gen_and_save_regression_data(n=100, file_path='../data/customer_off_time_salary_satisfaction',
     #                                   feature_dim=3)
     # plot_regression_data(file_path='../data/customer_off_time_salary_satisfaction')
-    # auto_gen_and_save_cluster_data(file_path='../data/customer_data', n=200)
-    plot_regression_data(file_path='../data/customer_data')
+    # auto_gen_and_save_cluster_data(file_path='../data/customer_data_min', n=50, radius_ratio=0.8)
+    plot_regression_data(file_path='../data/customer_data_min')
 
 if __name__ == '__main__':
     main()
