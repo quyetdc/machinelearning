@@ -1,5 +1,6 @@
 import os
 import random
+import math
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,6 +43,49 @@ def auto_gen_2d_classification_data(n=100, min_num=0.0, max_num=1.0):
             label = 1
             data.append([ft1, ft2, label])
     return data
+
+
+def distance(vector_a, vector_b):
+    size_a = size_b = len(vector_a)
+    dist = 0.0
+    for i in range(size_a):
+        dist += math.pow(vector_a[i] - vector_b[i], 2)
+    dist = math.sqrt(dist)
+    return dist
+
+
+def auto_gen_3d_clusters(centroids, n_samples=100, radius_ratio=0.95):
+    data = []
+    n_clusters = len(centroids)
+    for i in range(n_clusters):
+        other_ids = list(set(range(n_clusters)) - {i})
+        distances = []
+        for o_i in other_ids:
+            distances.append(distance(centroids[i], centroids[o_i]))
+        min_dist = min(distances)
+        count = 0
+        while count < n_samples:
+            replace_dist_x = random.uniform(-0.6, 0.6) * min_dist
+            replace_dist_y = random.uniform(-0.6, 0.6) * min_dist
+            replace_dist_z = random.uniform(-0.6, 0.6) * min_dist
+            point = [replace_dist_x, replace_dist_y, replace_dist_z]
+            point = map(sum, zip(centroids[i], point))
+            real_dist = distance(point, centroids[i])
+            if real_dist < (radius_ratio * min_dist * 0.5):
+                data.append(point)
+                count += 1
+    return data
+
+
+def auto_gen_and_save_cluster_data(file_path, n=100):
+    centroids = [[0.1, 0.1, 0.1], [0.2, 0.3, 0.2], [0.4, 0.5, 0.4], [0.7, 0.8, 0.7]]
+    data = auto_gen_3d_clusters(centroids=centroids, n_samples=n)
+    f = open(file_path, 'w')
+    for sample_ in data:
+        sample_str = map(str, sample_)
+        f.write('\t'.join(sample_str))
+        f.write('\n')
+    f.close()
 
 
 def auto_gen_and_save_classification_data(n=100, file_path=''):
@@ -182,7 +226,9 @@ def main():
     # plot_regression_data(file_path='../data/customer_salary_satisfaction')
     # auto_gen_and_save_regression_data(n=100, file_path='../data/customer_off_time_salary_satisfaction',
     #                                   feature_dim=3)
-    plot_regression_data(file_path='../data/customer_off_time_salary_satisfaction')
+    # plot_regression_data(file_path='../data/customer_off_time_salary_satisfaction')
+    # auto_gen_and_save_cluster_data(file_path='../data/customer_data', n=200)
+    plot_regression_data(file_path='../data/customer_data')
 
 if __name__ == '__main__':
     main()
