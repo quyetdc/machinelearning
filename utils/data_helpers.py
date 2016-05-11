@@ -239,7 +239,7 @@ def get_data_by_label(feature_data, label_data, expect_label):
     xs = []
     ys = []
     zs = []
-    for sample_id, feature_vector in feature_data:
+    for sample_id, feature_vector in enumerate(feature_data):
         if label_data[sample_id] == expect_label:
             if feature_dim >= 1:
                 xs.append(feature_vector[0])
