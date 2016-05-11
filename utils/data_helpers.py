@@ -210,7 +210,7 @@ def plot_regression_data(file_path):
                 ys.append(sample[1])
             if feature_size > 2:
                 zs.append(sample[2])
-        if feature_size == 3:
+        if feature_size >= 3:
             fig = plt.figure()
 
             ax = fig.add_subplot(111, projection='3d')
@@ -237,7 +237,8 @@ def main():
     #                                   feature_dim=3)
     # plot_regression_data(file_path='../data/customer_off_time_salary_satisfaction')
     # auto_gen_and_save_cluster_data(file_path='../data/customer_data_min', n=50, radius_ratio=0.8)
-    plot_regression_data(file_path='../data/customer_data_min')
+    # plot_regression_data(file_path='../data/customer_data_min')
+    plot_regression_data(file_path='../data/user_movie_rating')
 
 if __name__ == '__main__':
     main()
