@@ -227,6 +227,29 @@ def plot_regression_data(file_path):
         plt.show()
 
 
+def get_data_range(data, start_index, end_index, x_id, y_id, z_id):
+    xs = np.array(data)[start_index:end_index, x_id]
+    ys = np.array(data)[start_index:end_index, y_id]
+    zs = np.array(data)[start_index:end_index, z_id]
+    return xs, ys, zs
+
+
+def get_data_by_label(feature_data, label_data, expect_label):
+    feature_dim = len(feature_data[0])
+    xs = []
+    ys = []
+    zs = []
+    for sample_id, feature_vector in feature_data:
+        if label_data[sample_id] == expect_label:
+            if feature_dim >= 1:
+                xs.append(feature_vector[0])
+            if feature_dim >= 2:
+                ys.append(feature_vector[1])
+            if feature_dim >= 3:
+                zs.append(feature_vector[2])
+    return xs, ys, zs
+
+
 def main():
     print('starting...')
     # auto_gen_and_save_classification_data(n=1000, file_path='../data/customer_saving_salary')
