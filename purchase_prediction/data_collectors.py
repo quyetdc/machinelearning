@@ -28,6 +28,7 @@ class DataCollector(object):
                 if line_arr[_array_id] == _id:
                     data.append(line_arr)
                     found_count += 1
+                    not_found_count = 0  # note
                 else:
                     not_found_count += 1
                     print(not_found_count)
