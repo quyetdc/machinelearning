@@ -6,6 +6,20 @@ class FileDAO(object):
         self.name = 'FileDAO'
         self.file_path = file_path
 
+    def get_all_lines(self):
+        f = open(self.file_path, 'r')
+        lines = list(f.readlines())
+        lines = [s.strip() for s in lines if len(s.strip()) > 0]
+        f.close()
+        return lines
+
+    def get_all_lines_as_arrays(self, delimiter='\t'):
+        f = open(self.file_path, 'r')
+        lines = list(f.readlines())
+        lines = [s.strip().split(delimiter) for s in lines if len(s.strip()) > 0]
+        f.close()
+        return lines
+
     def get_line(self, line_number):
         f = open(self.file_path, 'r')
         data = iter(f)
@@ -73,15 +87,19 @@ class FileDAO(object):
 
 def main():
     print('start...')
-    file_dao = FileDAO(file_path='../../data/customer_saving_salary')
-    line_at3 = file_dao.get_line(3)
-    line_at3_arr = file_dao.get_line_as_array(3)
-    line_at_range3_5, _ = file_dao.get_range_lines(3, 2)
-    line_at_range3_5_arr, _ = file_dao.get_range_lines_as_arrays(3, 2)
-    print(line_at3)
-    print(line_at3_arr)
-    print(line_at_range3_5)
-    print(line_at_range3_5_arr)
+    # file_dao = FileDAO(file_path='../../data/customer_saving_salary')
+    # line_at3 = file_dao.get_line(3)
+    # line_at3_arr = file_dao.get_line_as_array(3)
+    # line_at_range3_5, _ = file_dao.get_range_lines(3, 2)
+    # line_at_range3_5_arr, _ = file_dao.get_range_lines_as_arrays(3, 2)
+    # print(line_at3)
+    # print(line_at3_arr)
+    # print(line_at_range3_5)
+    # print(line_at_range3_5_arr)
+    file_path = '/media/cao/DATA/Study/Tech/Machine learning/Tech master/Purchase prediction/yoochoose-dataFull/yoochoose-buys.dat'
+    file_dao = FileDAO(file_path=file_path)
+    all_lines = file_dao.get_all_lines_as_arrays(delimiter=',')
+    print(all_lines[0])
 
 
 if __name__ == '__main__':

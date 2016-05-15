@@ -74,6 +74,7 @@ class DataCollector(object):
         line_count = 0
         while (found_count < limit) and (line_count < line_limit) and (not eof):
             lines, eof = file_dao.get_range_lines(offset, _batch_num)
+            print(offset)
             for line in lines:
                 line_arr = line.split(delimiter)
                 id_ = long(line_arr[_array_id])
@@ -112,9 +113,11 @@ def main():
     # print(len(id_list))
 
     # file_path = '/media/hact/F8C6516EC6512DDE/Recommendation Engines/Email marketing/Linear and non-linear models for purchase prediction/yoochoose-dataFull/yoochoose-buys.dat'
-    file_path = '/media/hact/F8C6516EC6512DDE/Recommendation Engines/Email marketing/Linear and non-linear models for purchase prediction/yoochoose-dataFull/yoochoose-clicks.dat'
+    # file_path = '/media/hact/F8C6516EC6512DDE/Recommendation Engines/Email marketing/Linear and non-linear models for purchase prediction/yoochoose-dataFull/yoochoose-clicks.dat'
+    file_path = '/media/cao/DATA/Study/Tech/Machine learning/Tech master/Purchase prediction/yoochoose-dataFull/yoochoose-clicks.dat'
     data_collector = DataCollector(file_path=file_path)
-    id_list, data = data_collector.collect_data_reduce_by_id(_id_min=0L, _id_max=10000L, delimiter=',')
+    id_list, data = data_collector.collect_data_reduce_by_id(_id_min=0L, _id_max=10000000000000L, delimiter=',',
+                                                             limit=1e10, line_limit=1e20)
     print(id_list)
     print(data)
     print(id_list[0])
